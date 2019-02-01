@@ -1,0 +1,10 @@
+// Applet Selection APDU Script
+//
+// Package:     pawel
+// Package AID: //aid/0011223344/0011
+// Applet:      Loyalty
+// Applet AID:  //aid/0011223344/
+//
+
+// Select Loyalty applet
+0x00 0xA4 0x04 0x00 0x05 0x00 0x11 0x22 0x33 0x44 0x7F;
