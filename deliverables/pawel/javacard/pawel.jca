@@ -1,5 +1,5 @@
 // converted by version  [v3.0.5]
-// on Fri Feb 01 21:49:49 CET 2019
+// on Sat Feb 02 01:37:45 CET 2019
 
 .package pawel {
 	.aid 0x0:0x11:0x22:0x33:0x44:0x0:0x11;
@@ -24,25 +24,25 @@
 		// 3
 		virtualMethodRef 0.9.2()B;		// getTriesRemaining()B
 		// 4
-		.classRef Loyalty;
-		// 5
-		staticMethodRef Loyalty/<init>([BSB)V;
-		// 6
-		staticMethodRef 0.16.1([BS[BSS)S;		// javacard/framework/Util.arrayCopy([BS[BSS)S
-		// 7
 		virtualMethodRef 0.9.5()V;		// reset()V
-		// 8
+		// 5
 		staticMethodRef 0.3.0()V;		// javacard/framework/Applet.<init>()V
-		// 9
+		// 6
 		staticMethodRef 0.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
-		// 10
+		// 7
+		.classRef Loyalty;
+		// 8
 		.classRef 0.9;		// javacard/framework/OwnerPIN
-		// 11
+		// 9
 		staticMethodRef 0.9.0(BB)V;		// javacard/framework/OwnerPIN.<init>(BB)V
-		// 12
+		// 10
 		staticFieldRef byte[] Loyalty/PIN_INIT_VALUE;
-		// 13
+		// 11
 		virtualMethodRef 0.9.8([BSB)V;		// update([BSB)V
+		// 12
+		staticMethodRef Loyalty/<init>([BSB)V;
+		// 13
+		staticMethodRef 0.16.7([BSSB)S;		// javacard/framework/Util.arrayFill([BSSB)S
 		// 14
 		virtualMethodRef 0.3.1()V;		// register()V
 		// 15
@@ -66,19 +66,23 @@
 			.descriptor	Ljavacard/framework/APDU;	0.10;
 
 		// 21
-		staticMethodRef 0.7.1(S)V;		// javacard/framework/ISOException.throwIt(S)V
+		staticMethodRef Loyalty/confirmTransaction()V;
 		// 22
-		virtualMethodRef 0.9.4()Z;		// isValidated()Z
+		staticMethodRef 0.7.1(S)V;		// javacard/framework/ISOException.throwIt(S)V
 		// 23
-		virtualMethodRef 0.10.6()S;		// setIncomingAndReceive()S
+		virtualMethodRef 0.9.4()Z;		// isValidated()Z
 		// 24
-		virtualMethodRef 0.10.7()S;		// setOutgoing()S
+		virtualMethodRef 0.10.6()S;		// setIncomingAndReceive()S
 		// 25
-		virtualMethodRef 0.10.9(S)V;		// setOutgoingLength(S)V
+		virtualMethodRef 0.10.7()S;		// setOutgoing()S
 		// 26
-		virtualMethodRef 0.10.4(SS)V;		// sendBytes(SS)V
+		virtualMethodRef 0.10.9(S)V;		// setOutgoingLength(S)V
 		// 27
+		virtualMethodRef 0.10.4(SS)V;		// sendBytes(SS)V
+		// 28
 		virtualMethodRef 0.9.1([BSB)Z;		// check([BSB)Z
+		// 29
+		staticMethodRef 0.16.1([BS[BSS)S;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 	}
 
 	.class public Loyalty 0 extends 0.3 {		// extends javacard/framework/Applet
@@ -90,14 +94,14 @@
 			public static final byte INS_CREDIT = 2;		// B
 			public static final byte INS_DEBIT = 4;		// B
 			public static final byte INS_ACCOUNT_BALANCE = 6;		// B
-			public static final byte VERIFY = 32;		// B
 			public static final byte INS_VERIFY = 32;		// B
-			public static final byte INS_CHANGE_REFERENCE_DATA = 36;		// B
+			public static final byte INS_CONFIRM_TRANSACTION = 102;		// B
 			public static final byte PIN_TRY_LIMIT = 3;		// B
 			public static final byte PIN_MAX_SIZE = 16;		// B
 			private static final short SW_PIN_TRY_LOCKED = 25536;		// S
-			static final short SW_VERIFICATION_FAILED = 25344;		// S
-			static final short SW_PIN_VERIFICATION_REQUIRED = 25345;		// S
+			private static final short SW_VERIFICATION_FAILED = 25344;		// S
+			private static final short SW_PIN_VERIFICATION_REQUIRED = 25345;		// S
+			private static final short SW_TRANSACTION_FAILED = 30583;		// S
 			private static final byte[] PIN_INIT_VALUE = {85,85,85,85};		// [B
 		}
 
@@ -120,11 +124,11 @@
 			.stack 4;
 			.locals 0;
 
-				L0:	new 4;		// pawel/Loyalty
+				L0:	new 7;		// pawel/Loyalty
 					aload_0;
 					sload_1;
 					sload_2;
-					invokespecial 5;		// pawel/Loyalty.<init>([BSB)V
+					invokespecial 12;		// pawel/Loyalty.<init>([BSB)V
 					return;
 		}
 
@@ -142,26 +146,11 @@
 		}
 
 		.method public deselect()V 4 {
-			.stack 5;
+			.stack 1;
 			.locals 0;
 
-				L0:	getfield_a_this 1;		// reference pawel/Loyalty.balance
-					sconst_0;
-					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
-					sconst_0;
-					sconst_1;
-					invokestatic 6;		// javacard/framework/Util.arrayCopy([BS[BSS)S
-					pop;
-					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
-					sconst_0;
-					dup2;
-					baload;
-					sconst_0;
-					sadd;
-					s2b;
-					bastore;
-					getfield_a_this 0;		// reference pawel/Loyalty.pin
-					invokevirtual 7;		// reset()V
+				L0:	getfield_a_this 0;		// reference pawel/Loyalty.pin
+					invokevirtual 4;		// reset()V
 					return;
 		}
 
@@ -170,28 +159,36 @@
 			.locals 0;
 
 				L0:	aload_0;
-					invokespecial 8;		// javacard/framework/Applet.<init>()V
+					invokespecial 5;		// javacard/framework/Applet.<init>()V
 					aload_0;
 					sconst_1;
 					sconst_2;
-					invokestatic 9;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					invokestatic 6;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
 					putfield_a 1;		// reference pawel/Loyalty.balance
 					aload_0;
-					new 10;		// javacard/framework/OwnerPIN
+					new 8;		// javacard/framework/OwnerPIN
 					dup;
 					sconst_3;
 					bspush 16;
-					invokespecial 11;		// javacard/framework/OwnerPIN.<init>(BB)V
+					invokespecial 9;		// javacard/framework/OwnerPIN.<init>(BB)V
 					putfield_a 0;		// reference pawel/Loyalty.pin
 					getfield_a_this 0;		// reference pawel/Loyalty.pin
-					getstatic_a 12;		// reference pawel/Loyalty.PIN_INIT_VALUE
+					getstatic_a 10;		// reference pawel/Loyalty.PIN_INIT_VALUE
 					sconst_0;
 					sconst_4;
-					invokevirtual 13;		// update([BSB)V
+					invokevirtual 11;		// update([BSB)V
 					aload_0;
 					sconst_1;
 					newarray 11;
 					putfield_a 2;		// reference pawel/Loyalty.tokenVault
+					getfield_a_this 1;		// reference pawel/Loyalty.balance
+					sconst_0;
+					sconst_1;
+					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
+					sconst_0;
+					baload;
+					invokestatic 13;		// javacard/framework/Util.arrayFill([BSSB)S
+					pop;
 					aload_0;
 					invokevirtual 14;		// register()V
 					return;
@@ -213,29 +210,32 @@
 				L3:	aload_2;
 					sconst_1;
 					baload;
-					slookupswitch L8 4 2 L4 4 L5 6 L6 32 L7;
+					slookupswitch L9 5 2 L4 4 L5 6 L6 32 L7 102 L8;
 				L4:	aload_0;
 					aload_1;
 					aload_2;
 					invokevirtual 17;		// creditToken(Ljavacard/framework/APDU;[B)V
-					goto L9;
+					goto L10;
 				L5:	aload_0;
 					aload_1;
 					aload_2;
 					invokespecial 18;		// pawel/Loyalty.debitToken(Ljavacard/framework/APDU;[B)V
-					goto L9;
+					goto L10;
 				L6:	aload_0;
 					aload_1;
 					aload_2;
 					invokespecial 19;		// pawel/Loyalty.accountBalance(Ljavacard/framework/APDU;[B)V
-					goto L9;
+					goto L10;
 				L7:	aload_0;
 					aload_1;
 					invokespecial 20;		// pawel/Loyalty.verify(Ljavacard/framework/APDU;)V
-					return;
-				L8:	sspush 27904;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
-				L9:	return;
+					goto L10;
+				L8:	aload_0;
+					invokespecial 21;		// pawel/Loyalty.confirmTransaction()V
+					goto L10;
+				L9:	sspush 27904;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L10:	return;
 		}
 
 		.method  creditToken(Ljavacard/framework/APDU;[B)V 128 {
@@ -245,16 +245,16 @@
 			.descriptor	Ljavacard/framework/APDU;	0.10;
 
 				L0:	getfield_a_this 0;		// reference pawel/Loyalty.pin
-					invokevirtual 22;		// isValidated()Z
+					invokevirtual 23;		// isValidated()Z
 					ifne L2;
 				L1:	sspush 25345;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	aload_1;
-					invokevirtual 23;		// setIncomingAndReceive()S
+					invokevirtual 24;		// setIncomingAndReceive()S
 					sconst_1;
 					if_scmpeq L4;
 				L3:	sspush 26368;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	getfield_a_this 1;		// reference pawel/Loyalty.balance
 					sconst_0;
 					dup2;
@@ -275,16 +275,16 @@
 			.descriptor	Ljavacard/framework/APDU;	0.10;
 
 				L0:	getfield_a_this 0;		// reference pawel/Loyalty.pin
-					invokevirtual 22;		// isValidated()Z
+					invokevirtual 23;		// isValidated()Z
 					ifne L2;
 				L1:	sspush 25345;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	aload_1;
-					invokevirtual 23;		// setIncomingAndReceive()S
+					invokevirtual 24;		// setIncomingAndReceive()S
 					sconst_1;
 					if_scmpeq L4;
 				L3:	sspush 26368;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	getfield_a_this 1;		// reference pawel/Loyalty.balance
 					sconst_0;
 					baload;
@@ -304,7 +304,7 @@
 					bastore;
 					goto L7;
 				L6:	sspush 27012;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 				L7:	return;
 		}
 
@@ -315,11 +315,11 @@
 			.descriptor	Ljavacard/framework/APDU;	0.10;
 
 				L0:	aload_1;
-					invokevirtual 24;		// setOutgoing()S
+					invokevirtual 25;		// setOutgoing()S
 					pop;
 					aload_1;
 					sconst_2;
-					invokevirtual 25;		// setOutgoingLength(S)V
+					invokevirtual 26;		// setOutgoingLength(S)V
 					aload_2;
 					sconst_0;
 					getfield_a_this 1;		// reference pawel/Loyalty.balance
@@ -335,7 +335,7 @@
 					aload_1;
 					sconst_0;
 					sconst_2;
-					invokevirtual 26;		// sendBytes(SS)V
+					invokevirtual 27;		// sendBytes(SS)V
 					return;
 		}
 
@@ -349,24 +349,44 @@
 					invokevirtual 16;		// getBuffer()[B
 					astore_2;
 				L1:	aload_1;
-					invokevirtual 23;		// setIncomingAndReceive()S
+					invokevirtual 24;		// setIncomingAndReceive()S
 					s2b;
 					sstore_3;
 				L2:	getfield_a_this 0;		// reference pawel/Loyalty.pin
 					aload_2;
 					sconst_5;
 					sload_3;
-					invokevirtual 27;		// check([BSB)Z
+					invokevirtual 28;		// check([BSB)Z
 					ifne L6;
 				L3:	getfield_a_this 0;		// reference pawel/Loyalty.pin
 					invokevirtual 3;		// getTriesRemaining()B
 					ifne L5;
 				L4:	sspush 25536;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 					goto L6;
 				L5:	sspush 25344;
-					invokestatic 21;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
 				L6:	return;
+		}
+
+		.method private confirmTransaction()V {
+			.stack 5;
+			.locals 0;
+
+				L0:	getfield_a_this 1;		// reference pawel/Loyalty.balance
+					sconst_0;
+					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
+					sconst_0;
+					sconst_1;
+					invokestatic 29;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
+					sconst_0;
+					baload;
+					ifne L2;
+				L1:	sspush 30583;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	return;
 		}
 
 	}
