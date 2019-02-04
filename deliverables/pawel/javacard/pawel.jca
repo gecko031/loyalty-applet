@@ -1,5 +1,5 @@
 // converted by version  [v3.0.5]
-// on Sat Feb 02 01:37:45 CET 2019
+// on Mon Feb 04 19:17:56 CET 2019
 
 .package pawel {
 	.aid 0x0:0x11:0x22:0x33:0x44:0x0:0x11;
@@ -18,31 +18,31 @@
 		// 0
 		instanceFieldRef 0.9 Loyalty/pin;
 		// 1
-		instanceFieldRef byte[] Loyalty/balance;
-		// 2
 		instanceFieldRef byte[] Loyalty/tokenVault;
+		// 2
+		instanceFieldRef byte[] Loyalty/balance;
 		// 3
-		virtualMethodRef 0.9.2()B;		// getTriesRemaining()B
-		// 4
-		virtualMethodRef 0.9.5()V;		// reset()V
-		// 5
-		staticMethodRef 0.3.0()V;		// javacard/framework/Applet.<init>()V
-		// 6
-		staticMethodRef 0.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
-		// 7
-		.classRef Loyalty;
-		// 8
-		.classRef 0.9;		// javacard/framework/OwnerPIN
-		// 9
-		staticMethodRef 0.9.0(BB)V;		// javacard/framework/OwnerPIN.<init>(BB)V
-		// 10
-		staticFieldRef byte[] Loyalty/PIN_INIT_VALUE;
-		// 11
-		virtualMethodRef 0.9.8([BSB)V;		// update([BSB)V
-		// 12
 		staticMethodRef Loyalty/<init>([BSB)V;
+		// 4
+		virtualMethodRef 0.9.2()B;		// getTriesRemaining()B
+		// 5
+		virtualMethodRef 0.9.5()V;		// reset()V
+		// 6
+		staticMethodRef 0.3.0()V;		// javacard/framework/Applet.<init>()V
+		// 7
+		.classRef 0.9;		// javacard/framework/OwnerPIN
+		// 8
+		staticMethodRef 0.9.0(BB)V;		// javacard/framework/OwnerPIN.<init>(BB)V
+		// 9
+		staticFieldRef byte[] Loyalty/PIN_INIT_VALUE;
+		// 10
+		virtualMethodRef 0.9.8([BSB)V;		// update([BSB)V
+		// 11
+		.classRef Loyalty;
+		// 12
+		staticMethodRef 0.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
 		// 13
-		staticMethodRef 0.16.7([BSSB)S;		// javacard/framework/Util.arrayFill([BSSB)S
+		staticMethodRef Loyalty/createInstance()V;
 		// 14
 		virtualMethodRef 0.3.1()V;		// register()V
 		// 15
@@ -81,8 +81,6 @@
 		virtualMethodRef 0.10.4(SS)V;		// sendBytes(SS)V
 		// 28
 		virtualMethodRef 0.9.1([BSB)Z;		// check([BSB)Z
-		// 29
-		staticMethodRef 0.16.1([BS[BSS)S;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 	}
 
 	.class public Loyalty 0 extends 0.3 {		// extends javacard/framework/Applet
@@ -96,6 +94,7 @@
 			public static final byte INS_ACCOUNT_BALANCE = 6;		// B
 			public static final byte INS_VERIFY = 32;		// B
 			public static final byte INS_CONFIRM_TRANSACTION = 102;		// B
+			public static final byte INS_CREATE_INSTANCE = 16;		// B
 			public static final byte PIN_TRY_LIMIT = 3;		// B
 			public static final byte PIN_MAX_SIZE = 16;		// B
 			private static final short SW_PIN_TRY_LOCKED = 25536;		// S
@@ -124,11 +123,11 @@
 			.stack 4;
 			.locals 0;
 
-				L0:	new 7;		// pawel/Loyalty
+				L0:	new 11;		// pawel/Loyalty
 					aload_0;
 					sload_1;
 					sload_2;
-					invokespecial 12;		// pawel/Loyalty.<init>([BSB)V
+					invokespecial 3;		// pawel/Loyalty.<init>([BSB)V
 					return;
 		}
 
@@ -136,8 +135,10 @@
 			.stack 1;
 			.locals 0;
 
-				L0:	getfield_a_this 0;		// reference pawel/Loyalty.pin
-					invokevirtual 3;		// getTriesRemaining()B
+				L0:	aload_0;
+					invokespecial 13;		// pawel/Loyalty.createInstance()V
+					getfield_a_this 0;		// reference pawel/Loyalty.pin
+					invokevirtual 4;		// getTriesRemaining()B
 					ifne L2;
 				L1:	sconst_0;
 					sreturn;
@@ -150,7 +151,7 @@
 			.locals 0;
 
 				L0:	getfield_a_this 0;		// reference pawel/Loyalty.pin
-					invokevirtual 4;		// reset()V
+					invokevirtual 5;		// reset()V
 					return;
 		}
 
@@ -159,36 +160,30 @@
 			.locals 0;
 
 				L0:	aload_0;
-					invokespecial 5;		// javacard/framework/Applet.<init>()V
+					invokespecial 6;		// javacard/framework/Applet.<init>()V
 					aload_0;
-					sconst_1;
-					sconst_2;
-					invokestatic 6;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
-					putfield_a 1;		// reference pawel/Loyalty.balance
-					aload_0;
-					new 8;		// javacard/framework/OwnerPIN
+					new 7;		// javacard/framework/OwnerPIN
 					dup;
 					sconst_3;
 					bspush 16;
-					invokespecial 9;		// javacard/framework/OwnerPIN.<init>(BB)V
+					invokespecial 8;		// javacard/framework/OwnerPIN.<init>(BB)V
 					putfield_a 0;		// reference pawel/Loyalty.pin
 					getfield_a_this 0;		// reference pawel/Loyalty.pin
-					getstatic_a 10;		// reference pawel/Loyalty.PIN_INIT_VALUE
+					getstatic_a 9;		// reference pawel/Loyalty.PIN_INIT_VALUE
 					sconst_0;
 					sconst_4;
-					invokevirtual 11;		// update([BSB)V
+					invokevirtual 10;		// update([BSB)V
 					aload_0;
 					sconst_1;
 					newarray 11;
-					putfield_a 2;		// reference pawel/Loyalty.tokenVault
-					getfield_a_this 1;		// reference pawel/Loyalty.balance
-					sconst_0;
+					putfield_a 1;		// reference pawel/Loyalty.tokenVault
+					aload_0;
 					sconst_1;
-					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
-					sconst_0;
-					baload;
-					invokestatic 13;		// javacard/framework/Util.arrayFill([BSSB)S
-					pop;
+					sconst_2;
+					invokestatic 12;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 2;		// reference pawel/Loyalty.balance
+					aload_0;
+					invokespecial 13;		// pawel/Loyalty.createInstance()V
 					aload_0;
 					invokevirtual 14;		// register()V
 					return;
@@ -255,7 +250,7 @@
 					if_scmpeq L4;
 				L3:	sspush 26368;
 					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
-				L4:	getfield_a_this 1;		// reference pawel/Loyalty.balance
+				L4:	getfield_a_this 2;		// reference pawel/Loyalty.balance
 					sconst_0;
 					dup2;
 					baload;
@@ -285,14 +280,14 @@
 					if_scmpeq L4;
 				L3:	sspush 26368;
 					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
-				L4:	getfield_a_this 1;		// reference pawel/Loyalty.balance
+				L4:	getfield_a_this 2;		// reference pawel/Loyalty.balance
 					sconst_0;
 					baload;
 					aload_2;
 					sconst_5;
 					baload;
 					if_scmplt L6;
-				L5:	getfield_a_this 1;		// reference pawel/Loyalty.balance
+				L5:	getfield_a_this 2;		// reference pawel/Loyalty.balance
 					sconst_0;
 					dup2;
 					baload;
@@ -322,13 +317,13 @@
 					invokevirtual 26;		// setOutgoingLength(S)V
 					aload_2;
 					sconst_0;
-					getfield_a_this 1;		// reference pawel/Loyalty.balance
+					getfield_a_this 2;		// reference pawel/Loyalty.balance
 					sconst_0;
 					baload;
 					bastore;
 					aload_2;
 					sconst_1;
-					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
+					getfield_a_this 1;		// reference pawel/Loyalty.tokenVault
 					sconst_0;
 					baload;
 					bastore;
@@ -359,7 +354,7 @@
 					invokevirtual 28;		// check([BSB)Z
 					ifne L6;
 				L3:	getfield_a_this 0;		// reference pawel/Loyalty.pin
-					invokevirtual 3;		// getTriesRemaining()B
+					invokevirtual 4;		// getTriesRemaining()B
 					ifne L5;
 				L4:	sspush 25536;
 					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
@@ -370,23 +365,40 @@
 		}
 
 		.method private confirmTransaction()V {
+			.stack 4;
+			.locals 0;
+
+				L0:	getfield_a_this 1;		// reference pawel/Loyalty.tokenVault
+					sconst_0;
+					baload;
+					iflt L2;
+				L1:	getfield_a_this 1;		// reference pawel/Loyalty.tokenVault
+					sconst_0;
+					getfield_a_this 2;		// reference pawel/Loyalty.balance
+					sconst_0;
+					baload;
+					bastore;
+					goto L3;
+				L2:	sspush 30583;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	return;
+		}
+
+		.method private createInstance()V {
 			.stack 5;
 			.locals 0;
 
-				L0:	getfield_a_this 1;		// reference pawel/Loyalty.balance
+				L0:	getfield_a_this 2;		// reference pawel/Loyalty.balance
 					sconst_0;
-					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
-					sconst_0;
-					sconst_1;
-					invokestatic 29;		// javacard/framework/Util.arrayCopy([BS[BSS)S
-					pop;
-					getfield_a_this 2;		// reference pawel/Loyalty.tokenVault
+					dup2;
+					baload;
+					getfield_a_this 1;		// reference pawel/Loyalty.tokenVault
 					sconst_0;
 					baload;
-					ifne L2;
-				L1:	sspush 30583;
-					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
-				L2:	return;
+					sadd;
+					s2b;
+					bastore;
+					return;
 		}
 
 	}

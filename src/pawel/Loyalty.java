@@ -10,8 +10,8 @@ public class Loyalty extends Applet {
 	public final static byte INS_ACCOUNT_BALANCE = 0x06;
 	public final static byte INS_VERIFY = (byte) 0x20;
 	public final static byte INS_CONFIRM_TRANSACTION = 0x66;
+	public final static byte INS_CREATE_INSTANCE = 0x10;
 	
-	//public final static byte INS_CHANGE_REFERENCE_DATA = (byte) 0x24;
 	public final static byte PIN_TRY_LIMIT = (byte) 3;
 	public final static byte PIN_MAX_SIZE = (byte) 16;
 
@@ -22,7 +22,7 @@ public class Loyalty extends Applet {
 	private final static byte[] PIN_INIT_VALUE = {(byte) 0x55, (byte) 0x55, (byte) 0x55, (byte) 0x55};
     
 	private byte[] tokenVault;
-	private byte[] balance = JCSystem.makeTransientByteArray((short) 1, (byte) JCSystem.CLEAR_ON_DESELECT);
+	private byte[] balance;
 	OwnerPIN pin;
 	
 	public static void install(byte[] bArray, short bOffset, byte bLength) {
@@ -30,6 +30,7 @@ public class Loyalty extends Applet {
 	}
 	
 	public boolean select() {
+		createInstance();
 		if ( pin.getTriesRemaining() == 0 )
 	           return false;
 		return true;
@@ -44,7 +45,8 @@ public class Loyalty extends Applet {
 		pin.update(PIN_INIT_VALUE, (short)0, (byte) 0x04);
 		
 		tokenVault = new byte[1];
-		Util.arrayFill(balance, (short)0, (short)1, tokenVault[0]);
+		balance = JCSystem.makeTransientByteArray((short) 1, (byte) JCSystem.CLEAR_ON_DESELECT);
+		createInstance();
         register();
 	}
 
@@ -57,6 +59,9 @@ public class Loyalty extends Applet {
 		byte[] buffer = apdu.getBuffer();
 
 		switch (buffer[ISO7816.OFFSET_INS]) {
+		/*
+		 * case INS_CREATE_INSTANCE: createInstance(); break;
+		 */
 		case INS_CREDIT:
 			creditToken(apdu, buffer);
 			break;
@@ -86,7 +91,6 @@ public class Loyalty extends Applet {
 		
 		balance[0] += (byte) buffer[ISO7816.OFFSET_CDATA];
 	}
-
 	
 	private void debitToken(APDU apdu, byte[] buffer) { 		
 		if ( ! pin.isValidated() )
@@ -101,7 +105,6 @@ public class Loyalty extends Applet {
 		} else
 			ISOException.throwIt(ISO7816.SW_DATA_INVALID);
 	}
-	 
 	private void accountBalance(APDU apdu, byte[] buffer) {
 		apdu.setOutgoing();
 		apdu.setOutgoingLength((byte) 2);
@@ -121,8 +124,12 @@ public class Loyalty extends Applet {
         }
     }
 	private void confirmTransaction() {
-		Util.arrayCopy(balance, (short)0, tokenVault, (short)0, (short)1);
-		if(tokenVault[0] == (byte)0x00) 
+		if(tokenVault[0] >= (byte)0x00) 
+			tokenVault[0] = balance[0];
+		else
 			ISOException.throwIt(SW_TRANSACTION_FAILED);
+	}
+	private void createInstance() {
+		balance[0] += tokenVault[0];
 	}
 }
