@@ -11,18 +11,17 @@ public class Loyalty extends Applet {
 	public final static byte INS_VERIFY = (byte) 0x20;
 	public final static byte INS_CONFIRM_TRANSACTION = 0x66;
 	
-	//public final static byte INS_CHANGE_REFERENCE_DATA = (byte) 0x24;
+	private final static byte[] PIN_INIT_VALUE = {(byte) 0x55, (byte) 0x55, (byte) 0x55, (byte) 0x55};
 	public final static byte PIN_TRY_LIMIT = (byte) 3;
 	public final static byte PIN_MAX_SIZE = (byte) 16;
 
 	private final static short SW_PIN_TRY_LOCKED = (short) 0x63c0;
     private final static short SW_VERIFICATION_FAILED = 0x6300;
     private final static short SW_PIN_VERIFICATION_REQUIRED = 0x6301;
-    private final static short SW_TRANSACTION_FAILED = 0x7777;
-	private final static byte[] PIN_INIT_VALUE = {(byte) 0x55, (byte) 0x55, (byte) 0x55, (byte) 0x55};
-    
-	private byte[] tokenVault;
-	private byte[] balance = JCSystem.makeTransientByteArray((short) 1, (byte) JCSystem.CLEAR_ON_DESELECT);
+    private final static short SW_TRANSACTION_NOT_MANDATORY = 0x7777;
+	
+	private short[] tokenVault;
+	private short[] balance = JCSystem.makeTransientShortArray((short) 1, (byte) JCSystem.CLEAR_ON_DESELECT);
 	OwnerPIN pin;
 	
 	public static void install(byte[] bArray, short bOffset, byte bLength) {
@@ -38,14 +37,13 @@ public class Loyalty extends Applet {
 		pin.reset();
 	}
 
-	private Loyalty(byte[] bArray, short bOffset, byte bLength) {
-
+	private Loyalty(byte[] bArray, short bOffset, byte bLength) {	
+		//balance[0] = 0x0000;
 		pin = new OwnerPIN(PIN_TRY_LIMIT, PIN_MAX_SIZE);
 		pin.update(PIN_INIT_VALUE, (short)0, (byte) 0x04);
 		
-		tokenVault = new byte[1];
-		Util.arrayFill(balance, (short)0, (short)1, tokenVault[0]);
-        register();
+		tokenVault = new short[1];
+		//balance[0] += tokenVault[0];
 	}
 
 	public void process(APDU apdu) {
@@ -81,33 +79,38 @@ public class Loyalty extends Applet {
 		if ( ! pin.isValidated() )
             ISOException.throwIt(SW_PIN_VERIFICATION_REQUIRED);
 		
-		if(apdu.setIncomingAndReceive() != 1)
+		if(apdu.setIncomingAndReceive() != 2)
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 		
-		balance[0] += (byte) buffer[ISO7816.OFFSET_CDATA];
+		balance[0] += (short) Util.getShort(buffer, ISO7816.OFFSET_CDATA);
+		accountBalance(apdu,buffer);
 	}
 
-	
 	private void debitToken(APDU apdu, byte[] buffer) { 		
 		if ( ! pin.isValidated() )
             ISOException.throwIt(SW_PIN_VERIFICATION_REQUIRED);
 		
-		if(apdu.setIncomingAndReceive() != 1)
+		if(apdu.setIncomingAndReceive() != 2)
 		ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 		
-		if(balance[0] >= (byte)buffer[ISO7816.OFFSET_CDATA]) {
-			balance[0] -= (byte) buffer[ISO7816.OFFSET_CDATA];
-			//tokenVault[0] -= (byte) buffer[ISO7816.OFFSET_CDATA];
+		if(balance[0] >= (short) Util.getShort(buffer, ISO7816.OFFSET_CDATA)) {
+			balance[0] -= (short) Util.getShort(buffer, ISO7816.OFFSET_CDATA);//(byte) buffer[ISO7816.OFFSET_CDATA];
 		} else
 			ISOException.throwIt(ISO7816.SW_DATA_INVALID);
+		accountBalance(apdu,buffer);
+			
 	}
 	 
 	private void accountBalance(APDU apdu, byte[] buffer) {
+		
 		apdu.setOutgoing();
-		apdu.setOutgoingLength((byte) 2);
-		buffer[0] = balance[0];
-		buffer[1] = tokenVault[0];
-		apdu.sendBytes((byte) 0, (byte) 2);
+		apdu.setOutgoingLength((byte) 4);
+
+		Util.setShort(buffer, (short) 0, balance[0]);
+		Util.setShort(buffer, (short) 2, tokenVault[0]);
+		//tokenVault checking is only for tests
+		
+		apdu.sendBytes((byte) 0, (byte) 4);
 	}
 	private void verify(APDU apdu) {
         byte[] buffer = apdu.getBuffer();
@@ -121,8 +124,12 @@ public class Loyalty extends Applet {
         }
     }
 	private void confirmTransaction() {
-		Util.arrayCopy(balance, (short)0, tokenVault, (short)0, (short)1);
-		if(tokenVault[0] == (byte)0x00) 
-			ISOException.throwIt(SW_TRANSACTION_FAILED);
+		if ( ! pin.isValidated() )
+            ISOException.throwIt(SW_PIN_VERIFICATION_REQUIRED);
+		
+		if(tokenVault[0] != balance[0] && balance[0] >= (short)0 )
+			tokenVault[0] += balance[0];
+		else  
+			ISOException.throwIt(SW_TRANSACTION_NOT_MANDATORY);			 
 	}
 }
