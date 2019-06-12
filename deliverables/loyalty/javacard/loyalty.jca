@@ -1,0 +1,406 @@
+// converted by version  [v3.0.5]
+// on Wed Jun 12 21:40:54 CEST 2019
+
+.package loyalty {
+	.aid 0x0:0x11:0x22:0x33:0x44:0x0:0x11;
+	.version 1.0;
+
+	.imports {
+		0xA0:0x0:0x0:0x0:0x62:0x1:0x1 1.6;		//javacard/framework
+		0xA0:0x0:0x0:0x0:0x62:0x0:0x1 1.0;		//java/lang
+	}
+
+	.applet {
+		0x0:0x11:0x22:0x33:0x44 Loyalty;
+	}
+
+	.constantPool {
+		// 0
+		instanceFieldRef 0.9 Loyalty/pin;
+		// 1
+		instanceFieldRef byte[] Loyalty/tokenVault;
+		// 2
+		instanceFieldRef byte[] Loyalty/balance;
+		// 3
+		staticMethodRef Loyalty/<init>([BSB)V;
+		// 4
+		virtualMethodRef 0.9.2()B;		// getTriesRemaining()B
+		// 5
+		virtualMethodRef 0.9.5()V;		// reset()V
+		// 6
+		staticMethodRef 0.3.0()V;		// javacard/framework/Applet.<init>()V
+		// 7
+		.classRef 0.9;		// javacard/framework/OwnerPIN
+		// 8
+		staticMethodRef 0.9.0(BB)V;		// javacard/framework/OwnerPIN.<init>(BB)V
+		// 9
+		staticFieldRef byte[] Loyalty/PIN_INIT_VALUE;
+		// 10
+		virtualMethodRef 0.9.8([BSB)V;		// update([BSB)V
+		// 11
+		.classRef Loyalty;
+		// 12
+		staticMethodRef 0.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+		// 13
+		staticMethodRef Loyalty/createInstance()V;
+		// 14
+		virtualMethodRef 0.3.1()V;		// register()V
+		// 15
+		virtualMethodRef 0.3.3()Z;		// selectingApplet()Z
+		// 16
+		virtualMethodRef 0.10.1()[B;		// getBuffer()[B
+		// 17
+		virtualMethodRef Loyalty/creditToken(Ljavacard/framework/APDU;[B)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 18
+		staticMethodRef Loyalty/debitToken(Ljavacard/framework/APDU;[B)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 19
+		staticMethodRef Loyalty/accountBalance(Ljavacard/framework/APDU;[B)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 20
+		staticMethodRef Loyalty/verify(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 21
+		staticMethodRef Loyalty/confirmTransaction()V;
+		// 22
+		staticMethodRef 0.7.1(S)V;		// javacard/framework/ISOException.throwIt(S)V
+		// 23
+		virtualMethodRef 0.9.4()Z;		// isValidated()Z
+		// 24
+		virtualMethodRef 0.10.6()S;		// setIncomingAndReceive()S
+		// 25
+		virtualMethodRef 0.10.7()S;		// setOutgoing()S
+		// 26
+		virtualMethodRef 0.10.9(S)V;		// setOutgoingLength(S)V
+		// 27
+		virtualMethodRef 0.10.4(SS)V;		// sendBytes(SS)V
+		// 28
+		virtualMethodRef 0.9.1([BSB)Z;		// check([BSB)Z
+	}
+
+	.class public Loyalty 0 extends 0.3 {		// extends javacard/framework/Applet
+
+		.fields {
+			private byte[] tokenVault 0;		// [B
+			private byte[] balance 1;		// [B
+			 0.9 pin 2;		// Ljavacard/framework/OwnerPIN;
+			public static final byte INS_CREDIT = 2;		// B
+			public static final byte INS_DEBIT = 4;		// B
+			public static final byte INS_ACCOUNT_BALANCE = 6;		// B
+			public static final byte INS_VERIFY = 32;		// B
+			public static final byte INS_CONFIRM_TRANSACTION = 102;		// B
+			public static final byte INS_CREATE_INSTANCE = 16;		// B
+			public static final byte PIN_TRY_LIMIT = 3;		// B
+			public static final byte PIN_MAX_SIZE = 16;		// B
+			private static final short SW_PIN_TRY_LOCKED = 25536;		// S
+			private static final short SW_VERIFICATION_FAILED = 25344;		// S
+			private static final short SW_PIN_VERIFICATION_REQUIRED = 25345;		// S
+			private static final short SW_TRANSACTION_FAILED = 30583;		// S
+			private static final byte[] PIN_INIT_VALUE = {85,85,85,85};		// [B
+		}
+
+		.publicMethodTable 4 {
+			equals(Ljava/lang/Object;)Z;
+			register()V;
+			register([BSB)V;
+			selectingApplet()Z;
+			deselect()V;
+			getShareableInterfaceObject(Ljavacard/framework/AID;B)Ljavacard/framework/Shareable;;
+			select()Z;
+			process(Ljavacard/framework/APDU;)V;
+		}
+
+		.packageMethodTable 0 {
+			creditToken(Ljavacard/framework/APDU;[B)V;
+		}
+
+		.method public static install([BSB)V 0 {
+			.stack 4;
+			.locals 0;
+
+				L0:	new 11;		// loyalty/Loyalty
+					aload_0;
+					sload_1;
+					sload_2;
+					invokespecial 3;		// loyalty/Loyalty.<init>([BSB)V
+					return;
+		}
+
+		.method public select()Z 6 {
+			.stack 1;
+			.locals 0;
+
+				L0:	aload_0;
+					invokespecial 13;		// loyalty/Loyalty.createInstance()V
+					getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					invokevirtual 4;		// getTriesRemaining()B
+					ifne L2;
+				L1:	sconst_0;
+					sreturn;
+				L2:	sconst_1;
+					sreturn;
+		}
+
+		.method public deselect()V 4 {
+			.stack 1;
+			.locals 0;
+
+				L0:	getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					invokevirtual 5;		// reset()V
+					return;
+		}
+
+		.method private <init>([BSB)V {
+			.stack 5;
+			.locals 0;
+
+				L0:	aload_0;
+					invokespecial 6;		// javacard/framework/Applet.<init>()V
+					aload_0;
+					new 7;		// javacard/framework/OwnerPIN
+					dup;
+					sconst_3;
+					bspush 16;
+					invokespecial 8;		// javacard/framework/OwnerPIN.<init>(BB)V
+					putfield_a 0;		// reference loyalty/Loyalty.pin
+					getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					getstatic_a 9;		// reference loyalty/Loyalty.PIN_INIT_VALUE
+					sconst_0;
+					sconst_4;
+					invokevirtual 10;		// update([BSB)V
+					aload_0;
+					sconst_1;
+					newarray 11;
+					putfield_a 1;		// reference loyalty/Loyalty.tokenVault
+					aload_0;
+					sconst_1;
+					sconst_2;
+					invokestatic 12;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 2;		// reference loyalty/Loyalty.balance
+					aload_0;
+					invokespecial 13;		// loyalty/Loyalty.createInstance()V
+					aload_0;
+					invokevirtual 14;		// register()V
+					return;
+		}
+
+		.method public process(Ljavacard/framework/APDU;)V 7 {
+			.stack 3;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokevirtual 15;		// selectingApplet()Z
+					ifeq L2;
+				L1:	return;
+				L2:	aload_1;
+					invokevirtual 16;		// getBuffer()[B
+					astore_2;
+				L3:	aload_2;
+					sconst_1;
+					baload;
+					slookupswitch L9 5 2 L4 4 L5 6 L6 32 L7 102 L8;
+				L4:	aload_0;
+					aload_1;
+					aload_2;
+					invokevirtual 17;		// creditToken(Ljavacard/framework/APDU;[B)V
+					goto L10;
+				L5:	aload_0;
+					aload_1;
+					aload_2;
+					invokespecial 18;		// loyalty/Loyalty.debitToken(Ljavacard/framework/APDU;[B)V
+					goto L10;
+				L6:	aload_0;
+					aload_1;
+					aload_2;
+					invokespecial 19;		// loyalty/Loyalty.accountBalance(Ljavacard/framework/APDU;[B)V
+					goto L10;
+				L7:	aload_0;
+					aload_1;
+					invokespecial 20;		// loyalty/Loyalty.verify(Ljavacard/framework/APDU;)V
+					goto L10;
+				L8:	aload_0;
+					invokespecial 21;		// loyalty/Loyalty.confirmTransaction()V
+					goto L10;
+				L9:	sspush 27904;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L10:	return;
+		}
+
+		.method  creditToken(Ljavacard/framework/APDU;[B)V 128 {
+			.stack 5;
+			.locals 0;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					invokevirtual 23;		// isValidated()Z
+					ifne L2;
+				L1:	sspush 25345;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 24;		// setIncomingAndReceive()S
+					sconst_1;
+					if_scmpeq L4;
+				L3:	sspush 26368;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	getfield_a_this 2;		// reference loyalty/Loyalty.balance
+					sconst_0;
+					dup2;
+					baload;
+					aload_2;
+					sconst_5;
+					baload;
+					sadd;
+					s2b;
+					bastore;
+					return;
+		}
+
+		.method private debitToken(Ljavacard/framework/APDU;[B)V {
+			.stack 5;
+			.locals 0;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					invokevirtual 23;		// isValidated()Z
+					ifne L2;
+				L1:	sspush 25345;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 24;		// setIncomingAndReceive()S
+					sconst_1;
+					if_scmpeq L4;
+				L3:	sspush 26368;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	getfield_a_this 2;		// reference loyalty/Loyalty.balance
+					sconst_0;
+					baload;
+					aload_2;
+					sconst_5;
+					baload;
+					if_scmplt L6;
+				L5:	getfield_a_this 2;		// reference loyalty/Loyalty.balance
+					sconst_0;
+					dup2;
+					baload;
+					aload_2;
+					sconst_5;
+					baload;
+					ssub;
+					s2b;
+					bastore;
+					goto L7;
+				L6:	sspush 27012;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L7:	return;
+		}
+
+		.method private accountBalance(Ljavacard/framework/APDU;[B)V {
+			.stack 4;
+			.locals 0;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_1;
+					invokevirtual 25;		// setOutgoing()S
+					pop;
+					aload_1;
+					sconst_2;
+					invokevirtual 26;		// setOutgoingLength(S)V
+					aload_2;
+					sconst_0;
+					getfield_a_this 2;		// reference loyalty/Loyalty.balance
+					sconst_0;
+					baload;
+					bastore;
+					aload_2;
+					sconst_1;
+					getfield_a_this 1;		// reference loyalty/Loyalty.tokenVault
+					sconst_0;
+					baload;
+					bastore;
+					aload_1;
+					sconst_0;
+					sconst_2;
+					invokevirtual 27;		// sendBytes(SS)V
+					return;
+		}
+
+		.method private verify(Ljavacard/framework/APDU;)V {
+			.stack 4;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_1;
+					invokevirtual 16;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokevirtual 24;		// setIncomingAndReceive()S
+					s2b;
+					sstore_3;
+				L2:	getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					aload_2;
+					sconst_5;
+					sload_3;
+					invokevirtual 28;		// check([BSB)Z
+					ifne L6;
+				L3:	getfield_a_this 0;		// reference loyalty/Loyalty.pin
+					invokevirtual 4;		// getTriesRemaining()B
+					ifne L5;
+				L4:	sspush 25536;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+					goto L6;
+				L5:	sspush 25344;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L6:	return;
+		}
+
+		.method private confirmTransaction()V {
+			.stack 4;
+			.locals 0;
+
+				L0:	getfield_a_this 1;		// reference loyalty/Loyalty.tokenVault
+					sconst_0;
+					baload;
+					iflt L2;
+				L1:	getfield_a_this 1;		// reference loyalty/Loyalty.tokenVault
+					sconst_0;
+					getfield_a_this 2;		// reference loyalty/Loyalty.balance
+					sconst_0;
+					baload;
+					bastore;
+					goto L3;
+				L2:	sspush 30583;
+					invokestatic 22;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	return;
+		}
+
+		.method private createInstance()V {
+			.stack 5;
+			.locals 0;
+
+				L0:	getfield_a_this 2;		// reference loyalty/Loyalty.balance
+					sconst_0;
+					dup2;
+					baload;
+					getfield_a_this 1;		// reference loyalty/Loyalty.tokenVault
+					sconst_0;
+					baload;
+					sadd;
+					s2b;
+					bastore;
+					return;
+		}
+
+	}
+
+}
