@@ -1,0 +1,30 @@
+mode_211
+enable_trace
+establish_context
+card_connect
+
+# Our TK Key (my Key)
+send_apdu -sc 0 -APDU 00A4040010C238E449F725B1510EAA699550CABA16
+
+# Reset card to factory defaults - THIS WILL WIPE OUT ALL APPLETS INSTALLED
+send_apdu -sc 0 -APDU 00F00000
+
+# Set the Card to use T=1 transmission mode
+send_apdu -sc 0 -APDU C0D6012301DA
+send_apdu -sc 0 -APDU C0D6014601DA
+# Not sure what this does...
+send_apdu -sc 0 -APDU C0D6012201FE
+# Make the Card identify as SLEEPMODE/NEGOTIABLE/T=1 on both cold and warm states
+send_apdu -sc 0 -APDU C0D60124010F
+send_apdu -sc 0 -APDU C0D60147010F
+
+# Set the card's historical ATR bytes to display as J 2 A 0 8 1 , T = 1
+# Cold
+send_apdu -sc 0 -APDU c0d601370b0a4a32413038312C543D31
+# Warm
+send_apdu -sc 0 -APDU c0d6015A0b0a4a32413038312C543D31
+
+# Set the auth key to a the default value 404142434445464748494a4b4c4d4e4f
+send_apdu -sc 0 -APDU c0d6030510404142434445464748494a4b4c4d4e4f
+send_apdu -sc 0 -APDU c0d6032110404142434445464748494a4b4c4d4e4f
+send_apdu -sc 0 -APDU c0d6033D10404142434445464748494a4b4c4d4e4f

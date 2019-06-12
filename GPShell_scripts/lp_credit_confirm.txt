@@ -1,0 +1,29 @@
+mode_211
+enable_trace
+establish_context
+card_connect 
+
+#chose an applet of 0011223344 AID
+select -AID 0011223344
+#pin verify
+send_apdu -APDU 002000000255557F
+
+
+#accountBalance
+send_apdu -APDU 00060000
+
+#credit 5
+send_apdu -APDU 00020000010501
+
+#credit 5
+send_apdu -APDU 00020000010501
+
+#accountBalance
+send_apdu -APDU 00060000
+
+
+#confirmTransaction
+send_apdu -APDU 00660000
+
+card_disconnect
+release_context
