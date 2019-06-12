@@ -1,4 +1,4 @@
-package pawel;
+package loyalty;
 
 import javacard.framework.*;
 
@@ -40,7 +40,7 @@ public class Loyalty extends Applet {
 	}
 
 	private Loyalty(byte[] bArray, short bOffset, byte bLength) {
-
+		
 		pin = new OwnerPIN(PIN_TRY_LIMIT, PIN_MAX_SIZE);
 		pin.update(PIN_INIT_VALUE, (short)0, (byte) 0x04);
 		

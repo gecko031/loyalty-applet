@@ -1,0 +1,12 @@
+Digest for loyalty/javacard/Debug.cap		[SHA-256: 2c6102f5f3407b0ee83f3136022cbdda1a6c80efc77ade964c19551c17827fe9]
+Digest for loyalty/javacard/Applet.cap		[SHA-256: 7aa6b98a62d8a78dd976bb52f26d2a3a0f64dde31130b6a013e06088ceac14b9]
+Digest for loyalty/javacard/ConstantPool.cap		[SHA-256: eb12e7531de854f25a86a02f178aa1eaa740b3d9c0c738ba0f2db5ef7902901f]
+Digest for loyalty/javacard/Method.cap		[SHA-256: 96cf348417ef002b9154d097142205752d5015145942f91575407ffba0d882b3]
+Digest for loyalty/javacard/StaticField.cap		[SHA-256: 3a6930b213e5f3c54c98dd18499fbe53ed323d33665cbe4a77ff5654a2b45283]
+Digest for loyalty/javacard/Header.cap		[SHA-256: 665d973c9330aa9c325bbd425a218c9ca05f5347ddd182e3efdafbc799e77b3c]
+Digest for loyalty/javacard/Class.cap		[SHA-256: 8a5fd920a108b990d9e42b748740acf121321a34bdd70e02be9c98ca16723989]
+Digest for loyalty/javacard/RefLocation.cap		[SHA-256: cf3342e831cd71de2b20fdf3212b5cf4eb57102a3c374f07517fd386e5d1af5e]
+Digest for loyalty/javacard/Directory.cap		[SHA-256: 8cc4d51ce743b0127051cd7310d43e833af65aef69ad967116c415220b145f87]
+Digest for loyalty/javacard/Descriptor.cap		[SHA-256: 265d7b0d7c5f683310206cc4508851f742cef2cf8c4be2e9c27e4778c2b7355d]
+Digest for loyalty/javacard/Import.cap		[SHA-256: e58492b256b4af8d7f1860f18e57c5336e254a618c2518c987dcefb33db0a8d0]
+Verification completed with 0 warnings and 0 errors.
