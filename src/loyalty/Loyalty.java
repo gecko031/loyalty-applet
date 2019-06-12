@@ -1,4 +1,4 @@
-package pawel;
+package loyalty;
 
 import javacard.framework.*;
 
