@@ -21,7 +21,7 @@ Second - run through emulator.<br/>
  model J2A040 from aliexpress.com - [link here](https://www.aliexpress.com/i/32856082491.html)
 * Download [GPShell](https://sourceforge.net/projects/globalplatform/files/GPShell/)
 * Download and install card reader drivers
-* Download only .cap file from link to this repository
+* Download only .cap file from [this link](https://github.com/gecko031/loyalty-applet/blob/master/deliverables/loyalty/javacard/loyalty.cap)
 
 
 #### Run through eclipse emulator:
